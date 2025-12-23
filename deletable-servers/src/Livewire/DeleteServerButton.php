@@ -23,7 +23,7 @@ class DeleteServerButton extends Component implements HasActions, HasForms
         return Action::make('removeServer')
             ->label('Delete Server')
             ->color('danger')
-            ->icon('heroicon-o-trash')
+            ->icon('tabler-trash')
             ->requiresConfirmation()
             ->modalHeading('Delete Server')
             ->modalDescription('Are you sure you want to delete this server? This action cannot be undone.')
@@ -55,3 +55,4 @@ class DeleteServerButton extends Component implements HasActions, HasForms
         return view('deletable-servers::livewire.delete-server-button');
     }
 }
+

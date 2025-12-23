@@ -1,0 +1,21 @@
+{
+    "id": "deletable-servers",
+    "name": "Deletable Servers",
+    "author": "norivane",
+    "version": "1.0.0",
+    "description": "A plugin that allows users to delete servers.",
+    "category": "plugin",
+    "url": "https://github.com/noriwanne/pelican-plugins",
+    "update_url": null,
+    "namespace": "Norivane\\DeletableServers",
+    "class": "DeletableServersPlugin",
+    "panels": [
+        "server"
+    ],
+    "panel_version": "^1.0.0-beta30",
+    "composer_packages": null,
+    "meta": {
+        "status": "enabled",
+        "status_message": null
+    }
+}

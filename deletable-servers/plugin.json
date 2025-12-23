@@ -6,7 +6,7 @@
     "description": "A plugin that allows users to delete servers.",
     "category": "plugin",
     "url": "https://github.com/noriwanne/pelican-plugins",
-    "update_url": https://raw.githubusercontent.com/noriwanne/pelican-plugins/refs/heads/main/deletable-servers/update.json,
+    "update_url": "https://raw.githubusercontent.com/noriwanne/pelican-plugins/refs/heads/main/deletable-servers/update.json",
     "namespace": "Norivane\\DeletableServers",
     "class": "DeletableServersPlugin",
     "panels": [

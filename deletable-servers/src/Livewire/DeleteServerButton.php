@@ -39,7 +39,7 @@ class DeleteServerButton extends Component implements HasActions, HasForms
                 return $user->can('s:settings:delete', $this->server) || $user->can('settings.delete', $this->server);
             })
             ->action(function () {
-                $this->server->delete();
+                $service->handle($server)
 
                 Notification::make()
                     ->title('Server deleted successfully')

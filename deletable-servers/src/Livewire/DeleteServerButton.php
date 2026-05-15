@@ -2,6 +2,8 @@
 
 namespace Norivane\DeletableServers\Livewire;
 
+use App\Services\Servers\ServerDeletionService;
+use Illuminate\Http\Client\ConnectionException;
 use App\Models\Server;
 use Filament\Actions\Action;
 use Filament\Actions\Concerns\InteractsWithActions;
@@ -23,7 +25,7 @@ class DeleteServerButton extends Component implements HasActions, HasForms
         return Action::make('removeServer')
             ->label('Delete Server')
             ->color('danger')
-            ->icon('tabler-trash')
+            ->icon('heroicon-o-trash')
             ->requiresConfirmation()
             ->modalHeading('Delete Server')
             ->modalDescription('Are you sure you want to delete this server? This action cannot be undone.')
@@ -31,22 +33,34 @@ class DeleteServerButton extends Component implements HasActions, HasForms
             ->authorize(function () {
                 /** @var \App\Models\User $user */
                 $user = auth()->user();
-                
+
                 if ($user->id === $this->server->owner_id || $user->is_admin) {
                     return true;
                 }
 
                 return $user->can('s:settings:delete', $this->server) || $user->can('settings.delete', $this->server);
             })
-            ->action(function () {
-                $service->handle($server)
+            ->action(function (ServerDeletionService $service) {
+                $server = $this->server;
 
-                Notification::make()
-                    ->title('Server deleted successfully')
-                    ->success()
-                    ->send();
+                try {
+                    $service->handle($server);
 
-                return redirect('/');
+                    Notification::make()
+                        ->title('Server deleted successfully')
+                        ->success()
+                        ->send();
+
+                    return redirect('/');
+                } catch (ConnectionException) {
+                    cache()->put("servers.{$server->uuid}.canForceDelete", true, now()->addMinutes(5));
+
+                    Notification::make()
+                        ->title('Failed to delete server')
+                        ->body('The server could not be contacted. You can try force delete.')
+                        ->warning()
+                        ->send();
+                }
             });
     }
 
@@ -55,4 +69,3 @@ class DeleteServerButton extends Component implements HasActions, HasForms
         return view('deletable-servers::livewire.delete-server-button');
     }
 }
-
